@@ -1,0 +1,37 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: 'Poppins', sans-serif;
+}
+
+.title{
+    font-size: 20px;
+    font-weight: 600;
+    margin: 2rem 0;
+    color: #098af3;
+}
+.author{
+    font-size: 10px;
+    color: #777;
+    margin-top: -20px;
+}
+
+.smaller{
+    margin-top: -20px;
+    font-size: 10px;
+    color: #777;
+}
+.content{
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 20px;
+}
+
+hr{
+    margin: 20px 0;
+    border: 1px solid #ccc;
+}

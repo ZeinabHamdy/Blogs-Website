@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    {% if ttile%}
+        title
+    {% else %}
+        Our Blogs
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% if not title %}
+        <h1>Our Blogs</h1>
+    {% endif %}
+
+    {% if not title %}
+        {% for post in posts %}
+            <article>
+                <p class="title">{{ post.title }}</p>
+                <p class="author">By {{ post.author }}</p>
+                <p class="content">{{ post.content }}</p>
+            </article>
+            <hr>
+        {% endfor %}
+    {% else %}
+        <article>
+            <p class='title'>{{ post.title }}</p> 
+            <p class='smaller'>
+                <span class='date'>Published on {{ post.published_at }}</span>
+                <span class='author'>By {{ post.author }}</span>
+            </p>
+            <p class='content'>{{ post.content }}</p>
+        </article>
+    {% endif %}
+            
+{% endblock %}

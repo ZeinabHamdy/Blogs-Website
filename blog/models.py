@@ -2,6 +2,12 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
+class PublishedManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(status='published')
+
+
+
 class Post(models.Model):
     author = models.ForeignKey(
         User,
@@ -31,7 +37,9 @@ class Post(models.Model):
         ],
         default='draft',
     )
-
+    
+    objects = models.Manager()  # Default manager
+    published = PublishedManager()
 
     class Meta:
         ordering = ['-published_at']
