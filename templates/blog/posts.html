@@ -17,8 +17,11 @@
     {% if not title %}
         {% for post in posts %}
             <article>
-                <p class="title">{{ post.title }}</p>
-                <p class="author">By {{ post.author }}</p>
+                <p class="title"> <a href='../post/{{post.pk}}'>{{ post.title }}</a></p>
+                <p class='smaller'>
+                    <span class='date'>Published on {{ post.published_at }}</span>
+                    <span class='author'>By {{ post.author }}</span>
+                </p>
                 <p class="content">{{ post.content }}</p>
             </article>
             <hr>
@@ -28,13 +31,13 @@
         <div>
             <span >
                 {% if posts.has_previous %}
-                    <a href="http://127.0.0.1:8000/blog/posts/{{ posts.previous_page_number }}">Previous</a>
+                    <a href="?page={{ posts.previous_page_number }}">Previous</a>
                 {% endif %}
                 <span>
                     Page {{ page }} of {{ total_pages }}.
                 </span>
                 {% if posts.has_next %}
-                    <a href="http://127.0.0.1:8000/blog/posts/{{ posts.next_page_number }}">Next</a>
+                    <a href="?page={{ posts.next_page_number }}">Next</a>
                 {% endif %}
             </span>
         </div>

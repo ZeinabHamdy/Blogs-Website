@@ -4,10 +4,10 @@ from .models import Post
 
 
 
-def post_list(req, page_needed):
+def post_list(req):
     posts = Post.published.all()
     paginator = Paginator(posts, 4) # Show 4 posts per page
-    page_number = page_needed
+    page_number = int(req.GET.get('page')) # as req.GET.get('page') returns a string
     if page_number > paginator.num_pages:
         return render(req, 'blog/error.html', {'error_message': 'Page number must be less than or equal to the total number of pages'} )
     elif page_number < 1 :
