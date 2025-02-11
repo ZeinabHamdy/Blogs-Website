@@ -23,6 +23,23 @@
             </article>
             <hr>
         {% endfor %}
+
+
+        <div>
+            <span >
+                {% if posts.has_previous %}
+                    <a href="http://127.0.0.1:8000/blog/posts/{{ posts.previous_page_number }}">Previous</a>
+                {% endif %}
+                <span>
+                    Page {{ page }} of {{ total_pages }}.
+                </span>
+                {% if posts.has_next %}
+                    <a href="http://127.0.0.1:8000/blog/posts/{{ posts.next_page_number }}">Next</a>
+                {% endif %}
+            </span>
+        </div>
+
+
     {% else %}
         <article>
             <p class='title'>{{ post.title }}</p> 

@@ -1,12 +1,26 @@
 from django.shortcuts import render, get_object_or_404
+from django.core.paginator import Paginator
 from .models import Post
 
-# Create your views here.
-def post_list(req):
+
+
+def post_list(req, page_needed):
     posts = Post.published.all()
-    # to appear only published posts
+    paginator = Paginator(posts, 4) # Show 4 posts per page
+    page_number = page_needed
+    if page_number > paginator.num_pages:
+        return render(req, 'blog/error.html', {'error_message': 'Page number must be less than or equal to the total number of pages'} )
+    elif page_number < 1 :
+        return render(req, 'blog/error.html', {'error_message': 'Page number must be greater than 0'} )
+    elif page_number is float:
+        return render(req, 'blog/error.html', {'error_message': 'Page number must be an integer'})
+
+
+    posts = paginator.get_page(page_number)
     context = {
+        'page': page_number,
         'posts': posts,
+        'total_pages': paginator.num_pages,
     }
     return render(req, 'blog/posts.html', context)
 
