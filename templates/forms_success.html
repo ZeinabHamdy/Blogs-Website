@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    Success
+{% endblock %}
+
+{% block content %}
+
+    {% if messages %}
+        {% for message in messages %}
+            {% comment %}  |safe => not to escape HTML tags {% endcomment %}
+            <div class="alert alert-success">{{ message|safe }}</div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}
