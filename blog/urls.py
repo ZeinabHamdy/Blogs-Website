@@ -5,5 +5,5 @@ urlpatterns = [
     path('posts/', views.post_list, name='post_list'),
     path('post/<int:pk>/', views.post_details, name='post_details'),
     path('post_share/<int:pk>/', views.post_share, name='post_share'),
-    path('forms-success/', views.forms_success, name='forms-success'),
+    path('forms_success/', views.forms_success, name='forms_success'),
 ]

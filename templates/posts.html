@@ -24,6 +24,8 @@
                 </p>
                 <p class="content">{{ post.content }}</p>
             </article>
+            <br>
+            <span> <a href='http://127.0.0.1:8000/post_share/{{post.pk}}'>Share it ?</a> </span>
             <hr>
         {% endfor %}
 
@@ -52,6 +54,8 @@
             </p>
             <p class='content'>{{ post.content }}</p>
         </article>
+        <br>
+            <span> <a href='http://127.0.0.1:8000/post_share/{{post.pk}}'>Share it ?</a> </span>
     {% endif %}
             
 {% endblock %}

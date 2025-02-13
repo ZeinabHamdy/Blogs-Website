@@ -1,8 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator
+from django.core.mail import send_mail
 from .forms import EmailPostForm
-from django.contrib import messages
 from .models import Post
+from django.conf import settings
+
 
 
 
@@ -39,24 +41,30 @@ def post_details(req, pk):
     return render(req, 'posts.html', context)
 
 
-def forms_success(req):
-    return render(req, 'forms_success.html')
-
-
 def post_share(req, pk):
     post = get_object_or_404(Post.published, pk=pk)
     if req.method == 'POST':
         form = EmailPostForm(req.POST)
         if form.is_valid():
-            data = form.sendEmail()
-            messages.success(req, f"Email sent successfully! <br> Response: {data}")
-            return redirect('forms-success') 
+            cd = form.cleaned_data
+            send_mail(
+                cd['name'],
+                cd['comments'],
+                settings.EMAIL_HOST_USER,
+                [cd['email_to']],
+                fail_silently=False,
+            )
+            
+            return redirect('forms_success') 
     else:
         form = EmailPostForm() # empty form
-
     context = {
         'post': post,
         'form': form,
     }
-
     return render(req, 'post_share.html', context)
+
+
+
+def forms_success(req):
+        return render(req, 'forms_success.html')

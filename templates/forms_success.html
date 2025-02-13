@@ -6,11 +6,7 @@
 {% endblock %}
 
 {% block content %}
-
-    {% if messages %}
-        {% for message in messages %}
-            {% comment %}  |safe => not to escape HTML tags {% endcomment %}
-            <div class="alert alert-success">{{ message|safe }}</div>
-        {% endfor %}
-    {% endif %}
+    <h1>Success</h1><br>
+    <p> Your form was successfully submitted! </p><br>
+    <p> <a href="{% url 'post_list' %}?page=1">Return to the posts page</a> </p>
 {% endblock %}
