@@ -43,28 +43,21 @@ def post_details(req, pk):
 
 def post_share(req, pk):
     post = get_object_or_404(Post.published, pk=pk)
+    sent = False
     if req.method == 'POST':
         form = EmailPostForm(req.POST)
         if form.is_valid():
             cd = form.cleaned_data
-            send_mail(
-                cd['name'],
-                cd['comments'],
-                settings.EMAIL_HOST_USER,
-                [cd['email_to']],
-                fail_silently=False,
-            )
-            
-            return redirect('forms_success') 
+            post_url = req.build_absolute_uri(post.get_absolute_url())
+            subject = f"{cd['name']} ({cd['email_to']}) recommends you read \'{post.title}\' --- '{cd['subject']}' "
+            message = f"Read \'{post.title}\' at {post_url}\n\n{cd['name']}'s comments: {cd['comments']}"
+            send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [cd['email_to']])
+            sent = True
     else:
-        form = EmailPostForm() # empty form
+        form = EmailPostForm()
     context = {
         'post': post,
         'form': form,
+        'sent': sent,
     }
     return render(req, 'post_share.html', context)
-
-
-
-def forms_success(req):
-        return render(req, 'forms_success.html')

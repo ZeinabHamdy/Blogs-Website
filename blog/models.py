@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from django.contrib.auth.models import User
 
 
@@ -37,12 +38,14 @@ class Post(models.Model):
         ],
         default='draft',
     )
-    
     objects = models.Manager()  # Default manager
     published = PublishedManager()
 
     class Meta:
         ordering = ['-published_at']
+
+    def get_absolute_url(self):
+        return reverse('post_details', args=[self.id])
 
     def __str__(self):
         return self.title
