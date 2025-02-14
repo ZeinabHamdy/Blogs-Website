@@ -11,16 +11,19 @@ from django.conf import settings
 def post_list(req):
     posts = Post.published.all()
     paginator = Paginator(posts, 4) 
-    page_number = int(req.GET.get('page')) # as req.GET.get('page') returns a string
+    page_number = req.GET.get('page', '1') # as req.GET.get('page') returns a string
     error_message =''
-    if page_number > paginator.num_pages:
-        error_message = 'Page number must be less than or equal to the total number of pages'
-    elif page_number < 1 :
-        error_message ='Page number must be greater than 0'
-    elif page_number is float:
+
+    try:
+        page_number = int(page_number) 
+        if page_number < 1:
+            error_message = 'Page number must be greater than 0'
+        elif page_number > paginator.num_pages:
+            error_message = 'Page number must be less than or equal to the total number of pages'
+    except ValueError:
         error_message = 'Page number must be an integer'
         
-    if error_message != '':
+    if error_message :
         return render(req, 'error.html', {'error_message': error_message})
 
     posts = paginator.get_page(page_number)
@@ -32,6 +35,7 @@ def post_list(req):
     return render(req, 'posts.html', context)
 
 
+
 def post_details(req, pk):
     post = get_object_or_404(Post.published, pk=pk)
     context = {
@@ -39,6 +43,7 @@ def post_details(req, pk):
         'title': post.title,
     }
     return render(req, 'posts.html', context)
+
 
 
 def post_share(req, pk):
