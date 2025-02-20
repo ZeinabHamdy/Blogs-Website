@@ -52,10 +52,27 @@ class RegisterForm(forms.ModelForm):
         if User.objects.filter(email=email).exists():
             errors['email'] = 'Email already exists'
         if password and confirm_password and password != confirm_password:
-            errors['password'] = 'Passwords do not match'
-        elif password and len(password) < 8:
-            errors['password'] = 'Password must be at least 8 characters'
+            errors['password'] = []
+            errors['password'].append('Passwords do not match')
+        if password and len(password) < 8:
+            if 'password' not in errors:
+                errors['password'] = []
+            errors['password'].append('Password must be at least 8 characters')
 
         if errors:
             raise ValidationError(errors)
         return cleaned_data
+
+
+
+class LoginForm(forms.Form):
+    username = forms.CharField(
+        max_length=25,
+        label='Username',
+        required=True,
+    )
+    password = forms.CharField(
+        widget=forms.PasswordInput(),
+        label='Password',
+        required=True,
+    )

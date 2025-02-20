@@ -1,4 +1,4 @@
-from .forms import EmailPostForm, RegisterForm
+from .forms import EmailPostForm, RegisterForm, LoginForm
 from .models import Post
 
 from django.shortcuts import render, get_object_or_404, redirect
@@ -75,7 +75,7 @@ def post_share(req, pk):
 
 
 
-def register(req):
+def register_view(req):
     form = RegisterForm()
     if req.method == 'POST':
         form = RegisterForm(req.POST)
@@ -99,9 +99,24 @@ def register(req):
 
 
 
-
-def login(req):
+# note can't make the view name -> login because it cause conflict with the built-in login function
+def login_view(req):
+    form = LoginForm()
+    error_message = ''
+    if req.method == 'POST':
+        form = LoginForm(req.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(req, username=username, password=password)
+            if user is not None:
+                login(req, user,)
+                return redirect('post_list')
+            else:
+                error_message = 'Invalid username or password'
     context={
-
+        'title':'Login',
+        'form': form,
+        'error_message': error_message,
     }
     return render(req, 'login.html', context)

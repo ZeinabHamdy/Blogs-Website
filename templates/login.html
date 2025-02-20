@@ -1,11 +1,27 @@
 {% extends 'base.html' %}
 {% load static %}
+
 {% block title %}
-    
+    {{title}}
 {% endblock %}
 
 {% block content %}
-    
 
+    {% if error_message %}
+        <div class="alert alert-danger">
+            <strong>Please correct the following error:</strong>
+            <p> {{ error_message}}</p>
+        </div>
+    {% endif %}
+    
+    <h2>Log In </h2><br>
+    <p>Please fill in the form below to log in to your account.</p><br>
+    <p>Don't have an account? <a href="{% url 'register' %}">Register</a></p>
+    <br><br>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Login</button>
+    </form>
 
 {% endblock %}
