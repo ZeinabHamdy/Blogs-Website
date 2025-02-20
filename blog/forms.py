@@ -1,5 +1,6 @@
-from django import forms
+from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
+from django import forms
 
 
 class EmailPostForm(forms.Form):
@@ -45,13 +46,16 @@ class RegisterForm(forms.ModelForm):
         password = cleaned_data.get('password')
         confirm_password = cleaned_data.get('confirm_password')
 
-        if password and password != confirm_password:
-            self.add_error('password', 'Passwords do not match')
-        if password and len(password) < 8:
-            self.add_error('password', 'Password must be at least 8 characters')
+        errors = {}
         if User.objects.filter(username=username).exists():
-            self.add_error('username', 'Username already exists')
+            errors['username'] = 'Username already exists'
         if User.objects.filter(email=email).exists():
-            self.add_error('email', 'Email already exists')
-        return cleaned_data
+            errors['email'] = 'Email already exists'
+        if password and confirm_password and password != confirm_password:
+            errors['password'] = 'Passwords do not match'
+        elif password and len(password) < 8:
+            errors['password'] = 'Password must be at least 8 characters'
 
+        if errors:
+            raise ValidationError(errors)
+        return cleaned_data

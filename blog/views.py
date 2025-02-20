@@ -80,7 +80,6 @@ def register(req):
     if req.method == 'POST':
         form = RegisterForm(req.POST)
         if form.is_valid():
-            form.save()
             messages.success(req, 'Account created successfully')
             user = User.objects.create_user(
                 username=form.cleaned_data['username'],
