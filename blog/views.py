@@ -1,13 +1,17 @@
-from .forms import EmailPostForm
+from .forms import EmailPostForm, RegisterForm
 from .models import Post
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.mail import send_mail, EmailMessage
 from django.core.paginator import Paginator
-from django.core.mail import send_mail
+from django.contrib.auth.models import User
+from django.contrib import messages
+from django.utils import timezone
 from django.conf import settings
+from django.urls import reverse 
 from django.views import View
 
 
@@ -70,3 +74,35 @@ def post_share(req, pk):
     return render(req, 'post_share.html', context)
 
 
+
+def register(req):
+    form = RegisterForm()
+    if req.method == 'POST':
+        form = RegisterForm(req.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(req, 'Account created successfully')
+            user = User.objects.create_user(
+                username=form.cleaned_data['username'],
+                email=form.cleaned_data['email'],
+                password=form.cleaned_data['password'],
+                first_name=form.cleaned_data['first_name'],
+                last_name=form.cleaned_data['last_name'],
+            )
+            user.save()
+            return redirect('login')
+
+    context={
+        'title':'Register',
+        'form': form,
+    }
+    return render(req, 'register.html', context)
+
+
+
+
+def login(req):
+    context={
+
+    }
+    return render(req, 'login.html', context)

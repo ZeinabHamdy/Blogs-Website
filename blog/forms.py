@@ -21,3 +21,37 @@ class EmailPostForm(forms.Form):
 
 
 
+class RegisterForm(forms.ModelForm):
+    confirm_password = forms.CharField(
+        label='confirm_Password',
+        widget=forms.PasswordInput(),
+        required=True,
+    )
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'first_name', 'last_name', 'password']
+        widgets = {
+            'password': forms.PasswordInput(),
+        }
+        
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        first_name = cleaned_data.get('first_name')
+        last_name = cleaned_data.get('last_name')
+        username = cleaned_data.get('username')
+        email = cleaned_data.get('email')
+        password = cleaned_data.get('password')
+        confirm_password = cleaned_data.get('confirm_password')
+
+        if password and password != confirm_password:
+            self.add_error('password', 'Passwords do not match')
+        if password and len(password) < 8:
+            self.add_error('password', 'Password must be at least 8 characters')
+        if User.objects.filter(username=username).exists():
+            self.add_error('username', 'Username already exists')
+        if User.objects.filter(email=email).exists():
+            self.add_error('email', 'Email already exists')
+        return cleaned_data
+
