@@ -1,10 +1,14 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from django.core.paginator import Paginator
-from django.core.mail import send_mail
 from .forms import EmailPostForm
 from .models import Post
-from django.conf import settings
 
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator
+from django.core.mail import send_mail
+from django.conf import settings
+from django.views import View
 
 
 
@@ -35,7 +39,6 @@ def post_list(req):
     return render(req, 'posts.html', context)
 
 
-
 def post_details(req, pk):
     post = get_object_or_404(Post.published, pk=pk)
     context = {
@@ -43,7 +46,6 @@ def post_details(req, pk):
         'title': post.title,
     }
     return render(req, 'posts.html', context)
-
 
 
 def post_share(req, pk):
@@ -54,7 +56,7 @@ def post_share(req, pk):
         if form.is_valid():
             cd = form.cleaned_data
             post_url = req.build_absolute_uri(post.get_absolute_url())
-            subject = f"{cd['name']} ({cd['email_to']}) recommends you read \'{post.title}\' --- '{cd['subject']}' "
+            subject = f"{cd['name']} recommends you read \'{post.title}\' --- '{cd['subject']}' "
             message = f"Read \'{post.title}\' at {post_url}\n\n{cd['name']}'s comments: {cd['comments']}"
             send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [cd['email_to']])
             sent = True
@@ -66,3 +68,5 @@ def post_share(req, pk):
         'sent': sent,
     }
     return render(req, 'post_share.html', context)
+
+
