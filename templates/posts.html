@@ -10,8 +10,13 @@
 {% endblock %}
 
 {% block content %}
-    {% if not title %}
-        <h1>Our Blogs</h1>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
     {% endif %}
 
     {% if not title %}

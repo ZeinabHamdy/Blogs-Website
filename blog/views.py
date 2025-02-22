@@ -18,7 +18,7 @@ from django.views import View
 
 def post_list(req):
     posts = Post.published.all()
-    paginator = Paginator(posts, 4) 
+    paginator = Paginator(posts, 3) 
     page_number = req.GET.get('page', '1') # as req.GET.get('page') returns a string
     error_message =''
 
@@ -111,6 +111,7 @@ def login_view(req):
             user = authenticate(req, username=username, password=password)
             if user is not None:
                 login(req, user,)
+                messages.success(req, "Logged in successfully!")
                 return redirect('post_list')
             else:
                 error_message = 'Invalid username or password'
