@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 from dotenv import load_dotenv
+from decouple import config
 from pathlib import Path
 import os
 
@@ -83,12 +84,12 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Blogs',
-        'HOST': 'localhost',
-        'PORT': '5432', # port of postgreSQL
-        'USER': 'Django-Blogs',
-        'PASSWORD': 'D%j%a%n%g%o%_Zeinab',
+        'ENGINE': config('DB_ENGINE'),
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT': config('DB_PORT', cast=int),
     }
 }
 

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class='posts_list container'>
+        <div class='single-post'>
+            <div class='title'>
+                {{post.title}} 
+                <p class='by'> 
+                    published at <span class='diff'>{{post.published_at}}</span>
+                    by <span class='diff'> {{post.author}} </span> </p>
+            </div>
+            <div class='content'>
+                {{post.content}}
+            </div>
+            <div class="share-section">
+                <a href="{% url 'post_share' pk=post.pk %}" class="share-btn email">📩 Share via Email</a>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class='posts_list container'>
+        {% for post in posts %}
+            <div class='single-post'>
+                <div class='title'>
+                    <a href='../post/{{post.id}}/'> {{post.title}} </a>
+                    <p class='by'> 
+                        published at <span class='diff'>{{post.published_at}}</span>
+                        by <span class='diff'> {{post.author}} </span> </p>
+                </div>
+                <div class='content'>
+                    {{post.content}}
+                </div>
+            </div>
+        {% endfor %}
+
+        <div class="pagination">
+            {% if posts.has_previous %}
+                <a href="?page={{ posts.previous_page_number }}" class="prev-btn">⬅ Previous</a>
+            {% endif %}
+        
+            <span class="current-page">Page {{ posts.number }} of {{ posts.paginator.num_pages }}</span>
+        
+            {% if posts.has_next %}
+                <a href="?page={{ posts.next_page_number }}" class="next-btn">Next ➡</a>
+            {% endif %}
+        </div>
+        
+    </div>
+{% endblock content %}
