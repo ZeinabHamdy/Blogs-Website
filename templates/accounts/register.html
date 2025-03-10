@@ -7,11 +7,26 @@
 {% block content %}
 
     <div class='content-section container'>
+        
         <form method='POST'>
             {% csrf_token %}
             <fieldset class='field-group'>
-                <legend class='border-bottom mb-4'> Join Today </legend>
-                {{form.as_p}}
+                <legend class='border-bottom mb-4'> Create a new account </legend>
+
+                {% for field in form %}
+                    <div class="form-group">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}:</label>
+                        {{ field }}
+                        {% if field.errors %}
+                            <div class="invalid-feedback d-block">
+                                {% for error in field.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
             </fieldset>
 
             <div class='form-group mt-4'>
