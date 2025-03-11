@@ -40,6 +40,8 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'accounts.apps.AccountsConfig', # should make it before 'django.contrib.admin'
     'blog.apps.BlogConfig',
+    'crispy_forms',
+    'crispy_bootstrap5',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -133,6 +135,11 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static")
 ]
 STATICROOT = os.path.join(BASE_DIR, "staticfiles")
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
+
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
