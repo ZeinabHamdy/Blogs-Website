@@ -33,3 +33,14 @@ class UserRegisterForm(UserCreationForm):
             self.add_error('email', "This email is already in use. Please use a different email address.")
             
         return cleaned_data
+
+
+
+class LoginForm(forms.Form):
+    username = forms.CharField(
+        max_length=50,
+    )
+    password = forms.CharField(
+        widget=forms.PasswordInput()
+    )
+    

@@ -7,7 +7,7 @@
         <form method='POST'>
             {% csrf_token %}
             <fieldset class='field-group'>
-                <legend class='border-bottom mb-4'> Create a new account </legend>
+                <legend class='border-bottom mb-4'> Login to your account </legend>
 
                 {% for field in form %}
                     <div class="form-group">
@@ -28,13 +28,13 @@
             </fieldset>
 
             <div class='form-group mt-4'>
-                <button type='submit' class='my-btn'> Sign up </button>
+                <button type='submit' class='my-btn'> Login </button>
             </div>
 
             <div class='border-top pt-3 '>
                 <small class='text-muted' > 
-                    Already have an account ? 
-                    <a href='login' class='ml-2' > Login to your account </a>
+                    Don't have an account ? 
+                    <a href='register' class='ml-2' > create new account </a>
                 </small>
             </div>
             
