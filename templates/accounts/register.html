@@ -9,24 +9,9 @@
             <fieldset class='field-group'>
                 <legend class='border-bottom mb-4'> Create a new account </legend>
 
-                {% for field in form %}
-                    <div class="form-group">
-                        <label for="{{ field.id_for_label }}">
-                            {{ field.label }}{% if field.field.required %}<span class="text-danger"> *</span>{% endif %}
-                        </label>
-                        {{ field }}
-                        {% if field.errors %}
-                            <div class="invalid-feedback d-block">
-                                {% for error in field.errors %}
-                                    <span>{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                        {% endif %}
-                    </div>
-                {% endfor %}
+                {% include 'accounts/_auth_form_fields.html' with form=form %}
 
             </fieldset>
-
             <div class='form-group mt-4'>
                 <button type='submit' class='my-btn'> Sign up </button>
             </div>
