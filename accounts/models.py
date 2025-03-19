@@ -29,8 +29,8 @@ class Profile(models.Model):
         ],
     )
     image = models.ImageField(
-        upload_to = 'assets/profile_pics',
-        default = 'assets/profile_pics/default-user.png',
+        upload_to = 'profile_pics',
+        default = 'profile_pics/default-user.png',
     )
 
     def __str__(self):

@@ -62,4 +62,7 @@ def logout_view(req):
 
 @login_required
 def profile_view(req):
-    return render(req, 'accounts/profile.html')
+    context={
+        'title': f'{req.user} Profile',
+    }
+    return render(req, 'accounts/profile.html', context)

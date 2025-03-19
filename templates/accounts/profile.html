@@ -1,9 +1,39 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+
 {% block content %}
+<div class="profile-container">
+    <div class="profile-header">
+        <img src="{{ user.profile.image.url }}" alt="{{ user.username }}" class="profile-picture">
+        <div class="profile-info">
+            <h1>{{ user.username }}</h1>
+            <p class="headline">{{ user.profile.headline }}</p>
+        </div>
+    </div>
+    
+    <div class="profile-details">
+        {% if user.first_name and user.last_name%}
+            <div class="detail-item">
+                <h3>Name</h3>
+                <p>{{ user.first_name }} {{ user.last_name }}</p>
+            </div>
+        {% endif %}
+        
+        <div class="detail-item">
+            <h3>Bio</h3>
+            <p>{{ user.profile.bio }}</p>
+        </div>
+        
+        <div class="detail-item">
+            <h3>Email</h3>
+            <p>{{ user.email }}</p>
+        </div>
+        
 
-<div class='container'>
-    <h1> Welcome {{user.username}}</h1>
+        <div class="detail-item">
+            <h3>Gender</h3>
+            <p>{{ user.profile.gender}}</p>
+        </div>
+    </div>
 </div>
+{% endblock %}
 
-
-{% endblock content %}
