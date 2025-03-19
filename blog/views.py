@@ -13,7 +13,7 @@ from django.conf import settings
 
 def post_list(req):
     posts = Post.published.all()
-    paginator = Paginator(posts, 3)  # Show 3 posts per page
+    paginator = Paginator(posts, 5)  # Show 5 posts per page
     page_number = req.GET.get('page', '1')
 
     try:

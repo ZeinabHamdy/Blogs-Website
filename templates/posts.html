@@ -17,7 +17,7 @@
             </div>
         {% endfor %}
 
-        <div class="pagination">
+        <div class="pagination mb-5">
             {% if posts.has_previous %}
                 <a href="?page={{ posts.previous_page_number }}" class="prev-btn">⬅ Previous</a>
             {% endif %}
@@ -28,6 +28,5 @@
                 <a href="?page={{ posts.next_page_number }}" class="next-btn">Next ➡</a>
             {% endif %}
         </div>
-        
     </div>
 {% endblock content %}
