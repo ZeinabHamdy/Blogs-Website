@@ -1,5 +1,5 @@
 # by me
-from .forms import UserRegisterForm, LoginForm
+from .forms import UserRegisterForm, LoginForm, EditProfileForm
 
 
 # built-in
@@ -66,3 +66,21 @@ def profile_view(req):
         'title': f'{req.user} Profile',
     }
     return render(req, 'accounts/profile.html', context)
+
+def edit_profile_view(req):
+
+    user = req.user 
+    if request.method == 'POST':
+        form = EditProfileForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Profile updated successfully')
+            return redirect('profile')
+    else:
+        form = EditProfileForm()
+
+    context={
+        'title': f'Edit {req.user} profile',
+        'form': form,
+    }
+    return render(req, 'accounts/edit_profile.html', context)

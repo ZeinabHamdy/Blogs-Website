@@ -3,7 +3,12 @@
 {% block content %}
 <div class="profile-container">
     <div class="profile-header">
-        <img src="{{ user.profile.image.url }}" alt="{{ user.username }}" class="profile-picture">
+        <div class="profile-picture-container">
+            <img src="{{ user.profile.image.url }}" alt="{{ user.username }}" class="profile-picture">
+            <a href="{% url 'edit_profile' %}" class="edit-profile-icon" title="Edit Profile">
+                <i class="fas fa-edit"></i>
+            </a>
+        </div>
         <div class="profile-info">
             <h1>{{ user.username }}</h1>
             <p class="headline">{{ user.profile.headline }}</p>
@@ -22,7 +27,7 @@
             <h3>Bio</h3>
             <p>{{ user.profile.bio }}</p>
         </div>
-        
+
         <div class="detail-item">
             <h3>Email</h3>
             <p>{{ user.email }}</p>

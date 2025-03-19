@@ -1,5 +1,5 @@
 # by me
-
+from .models import Profile
 
 # by default
 from django.contrib.auth.forms import UserCreationForm
@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from django import forms 
+
 
 
 
@@ -43,3 +44,7 @@ class LoginForm(forms.Form):
     password = forms.CharField(
         widget=forms.PasswordInput(),
     )
+
+
+class EditProfileForm(forms.Form):
+    pass
