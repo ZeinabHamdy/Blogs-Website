@@ -8,10 +8,6 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from django import forms 
 
-
-
-
-
 # inherit from UserCreationForm 
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField()
@@ -46,5 +42,7 @@ class LoginForm(forms.Form):
     )
 
 
-class EditProfileForm(forms.Form):
-    pass
+class EditProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['first_name', 'last_name', 'bio', 'gender', 'headline', 'image']

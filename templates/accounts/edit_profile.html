@@ -1,20 +1,18 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
-    <div class='content-section container'>
-        
-        <form method='POST'>
+    <div class="content-section container">
+        <form method="POST" enctype="multipart/form-data"> <!-- to make file change-->
             {% csrf_token %}
             <fieldset class='field-group'>
-                <legend class='border-bottom mb-4'> Update your profile </legend>
+                <legend class='border-bottom mb-4'> Edit your profile </legend>
 
                 {% include 'accounts/_auth_form_fields.html' with form=form %}
+
             </fieldset>
-            <div class='form-group mt-4'>
-                <button type='submit' class='my-btn'> Save</button>
+            <div class="form-group mt-4">
+                <button type="submit" class="my-btn">Save Changes</button>
             </div>
         </form>
     </div>
-
-{% endblock content %}
+{% endblock %}

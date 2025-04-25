@@ -67,20 +67,25 @@ def profile_view(req):
     }
     return render(req, 'accounts/profile.html', context)
 
-def edit_profile_view(req):
 
-    user = req.user 
-    if request.method == 'POST':
-        form = EditProfileForm(request.POST)
+
+
+@login_required
+def edit_profile_view(req):
+    user = req.user
+    profile = user.profile
+    form=''
+    if req.method == 'POST':
+        form = EditProfileForm(req.POST, req.FILES, instance=profile) 
         if form.is_valid():
             form.save()
-            messages.success(request, 'Profile updated successfully')
-            return redirect('profile')
+            messages.success(req, 'Profile updated successfully')
+            return redirect('profile') 
     else:
-        form = EditProfileForm()
+        form = EditProfileForm(instance=profile)
 
-    context={
-        'title': f'Edit {req.user} profile',
+    context ={
+        'title': f'Edit {user.username} profile',
         'form': form,
     }
     return render(req, 'accounts/edit_profile.html', context)

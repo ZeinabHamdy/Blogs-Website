@@ -4,7 +4,7 @@
 <div class="profile-container">
     <div class="profile-header">
         <div class="profile-picture-container">
-            <img src="{{ user.profile.image.url }}" alt="{{ user.username }}" class="profile-picture">
+                <img src="{{ user.profile.get_image_url }}" alt="{{ user.username }}" class="profile-picture">
             <a href="{% url 'edit_profile' %}" class="edit-profile-icon" title="Edit Profile">
                 <i class="fas fa-edit"></i>
             </a>
@@ -16,10 +16,10 @@
     </div>
     
     <div class="profile-details">
-        {% if user.first_name and user.last_name%}
+        {% if user.profile.first_name and user.profile.last_name %}
             <div class="detail-item">
                 <h3>Name</h3>
-                <p>{{ user.first_name }} {{ user.last_name }}</p>
+                <p>{{ user.profile.first_name }} {{ user.profile.last_name }}</p>
             </div>
         {% endif %}
         
@@ -33,10 +33,9 @@
             <p>{{ user.email }}</p>
         </div>
         
-
         <div class="detail-item">
             <h3>Gender</h3>
-            <p>{{ user.profile.gender}}</p>
+            <p>{{ user.profile.gender }}</p>
         </div>
     </div>
 </div>
