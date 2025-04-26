@@ -40,6 +40,10 @@ def login_view(req):
             if user is not None :
                 messages.success(req,f"logged in successfully to user {form.cleaned_data['username']}")
                 login(req, user)
+                if user.profile.need_to_complete_profile :
+                    user.profile.need_to_complete_profile = False
+                    user.profile.save()
+                    return redirect('edit_profile')
                 return redirect('home')
             else :
                 form.add_error('username', 'username or password is incorrect')
@@ -74,7 +78,6 @@ def profile_view(req):
 def edit_profile_view(req):
     user = req.user
     profile = user.profile
-    form=''
     if req.method == 'POST':
         form = EditProfileForm(req.POST, req.FILES, instance=profile) 
         if form.is_valid():

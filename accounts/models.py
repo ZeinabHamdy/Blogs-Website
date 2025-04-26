@@ -43,7 +43,9 @@ class Profile(models.Model):
         null= True,
         blank=True,
     )
-
+    need_to_complete_profile= models.BooleanField(
+        default=True
+    )
 
     def save(self, *args, **kwargs):
         if not self.slug:
