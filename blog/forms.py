@@ -1,4 +1,5 @@
 from django import forms
+from .models import Post
 
 
 class EmailPostForm(forms.Form):
@@ -17,3 +18,9 @@ class EmailPostForm(forms.Form):
         required=False,
         widget=forms.Textarea,
     )
+
+
+class AddPost(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields= ['title', 'content', 'status']
