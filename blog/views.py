@@ -81,6 +81,7 @@ def add_post(req):
                 status=form.cleaned_data['status'],
             )
             new_post.save()
+            messages.success(req, "Your post has been added successfully.")
             return redirect('home')
     else :
         form = AddPost()
@@ -94,7 +95,7 @@ def add_post(req):
 
 @login_required
 def edit_post(req, pk):
-    post = Post.objects.get(id=pk)
+    post = get_object_or_404(Post.published, pk=pk)
 
     if req.user != post.author:
         messages.error(req, "You can't access this page")
@@ -104,6 +105,7 @@ def edit_post(req, pk):
         form = AddPost(req.POST, instance=post)
         if form.is_valid():
             form.save()
+            messages.success(req, "Your post has been updated successfully.")
             return redirect('home')
     else:
         form = AddPost(instance=post)
