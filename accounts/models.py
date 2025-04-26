@@ -1,9 +1,9 @@
 from django.contrib.auth.models import User
 from django.db import models
-from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.text import slugify
 import os
+from django.db.models.signals import post_save
 from django.conf import settings
 
 class Profile(models.Model):
@@ -11,13 +11,8 @@ class Profile(models.Model):
         User,
         on_delete = models.CASCADE,
     )
-    first_name = models.CharField(
-        max_length = 50,
-        null = True,
-        blank= True,
-    )
-    last_name = models.CharField(
-        max_length = 50,
+    full_name = models.CharField(
+        max_length = 100,
         null = True,
         blank= True,
     )
@@ -33,13 +28,12 @@ class Profile(models.Model):
     )
     gender = models.CharField(
         max_length= 50,
-        null = True,
-        blank = True,
         choices=[
             ('Male', 'Male'),
             ('Female', 'Female'),
             ('Prefer not to say', 'Prefer not to say'),
         ],
+        default='Prefer not to say',
     )
     image = models.ImageField(
         upload_to = 'profile_pics',
@@ -67,3 +61,12 @@ class Profile(models.Model):
 
     def __str__(self):
         return f'{self.user.username} profile'
+
+
+# signal to create a profile for any user when register 
+def create_profile(sender, **kwargs):
+    if kwargs['created']:
+        user_profile=Profile.objects.create(user=kwargs['instance'])
+
+
+post_save.connect(create_profile, sender=User)

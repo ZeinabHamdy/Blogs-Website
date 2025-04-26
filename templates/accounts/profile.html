@@ -4,40 +4,49 @@
 <div class="profile-container">
     <div class="profile-header">
         <div class="profile-picture-container">
-                <img src="{{ user.profile.get_image_url }}" alt="{{ user.username }}" class="profile-picture">
-            <a href="{% url 'edit_profile' %}" class="edit-profile-icon" title="Edit Profile">
-                <i class="fas fa-edit"></i>
-            </a>
+            <img src="{{ user.profile.get_image_url }}" alt="{{ user.username }}" class="profile-picture">
         </div>
         <div class="profile-info">
             <h1>{{ user.username }}</h1>
             <p class="headline">{{ user.profile.headline }}</p>
         </div>
+        <a href="{% url 'edit_profile' %}" class="edit-profile-button">
+            <i class="fas fa-edit"></i> Edit Profile
+        </a>
     </div>
     
-    <div class="profile-details">
-        {% if user.profile.first_name and user.profile.last_name %}
-            <div class="detail-item">
-                <h3>Name</h3>
-                <p>{{ user.profile.first_name }} {{ user.profile.last_name }}</p>
-            </div>
-        {% endif %}
+    <div class="profile-details-container">
+        <h2 class="section-title">Profile Information</h2>
         
-        <div class="detail-item">
-            <h3>Bio</h3>
-            <p>{{ user.profile.bio }}</p>
-        </div>
+        <div class="profile-details">
 
-        <div class="detail-item">
-            <h3>Email</h3>
-            <p>{{ user.email }}</p>
-        </div>
-        
-        <div class="detail-item">
-            <h3>Gender</h3>
-            <p>{{ user.profile.gender }}</p>
+            <div class="profile-field">
+                <div class="field-label">Name</div>
+                <div class="field-value">
+                    {% if not user.profile.full_name %}
+                        ...   
+                    {% else %}
+                        {{ user.profile.full_name }}
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="profile-field">
+                <div class="field-label">Bio</div>
+                <div class="field-value">{{ user.profile.bio }}</div>
+            </div>
+
+            <div class="profile-field">
+                <div class="field-label">Email</div>
+                <div class="field-value">{{ user.email }}</div>
+            </div>
+            
+            <div class="profile-field">
+                <div class="field-label">Gender</div>
+                <div class="field-value">{{ user.profile.gender }}</div>
+            </div>
         </div>
     </div>
 </div>
-{% endblock %}
 
+{% endblock %}
