@@ -7,6 +7,7 @@ from .models import Post
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.utils.timezone import now
 from django.core.mail import send_mail
 from django.contrib import messages
@@ -30,6 +31,7 @@ def post_list(req):
         'posts': posts,
         'total_pages': paginator.num_pages,
         'title': 'Posts',
+        'person': 0,
     }
     return render(req, 'posts.html', context)
 
@@ -94,7 +96,7 @@ def add_post(req):
 
     context = {
         'form': form,
-        'title': 'add a new post',
+        'title': 'Add a new post',
         'heading': 'Add a new post',
     }
     return render(req, 'add_edit_post.html', context)
@@ -131,7 +133,7 @@ def edit_post(req, pk):
 
     context = {
         'form': form,
-        'title': 'edit your post',
+        'title': 'Edit your post',
         'heading': 'Edit your post',
     }
     return render(req, 'add_edit_post.html', context)
@@ -149,3 +151,19 @@ def delete_post(req, pk):
         post.delete()
         messages.success(req, "Your post deleted successfully")
     return redirect('home')
+
+
+
+@login_required
+def person_posts(req, pk):
+    user=User.objects.get(pk=pk)
+    drafted = Post.draft.filter(author=user)
+    published = Post.published.filter(author=user)
+
+    context ={
+        'title': f'View {user.username} posts',
+        'posts': published,
+        'posts_draft': drafted,
+        'person': 1,
+    }
+    return render(req, 'posts.html', context)

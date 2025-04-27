@@ -7,7 +7,9 @@ class PublishedManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().filter(status='published')
 
-
+class DraftManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(status='draft')
 
 class Post(models.Model):
     author = models.ForeignKey(
@@ -40,6 +42,7 @@ class Post(models.Model):
     )
     objects = models.Manager()  # Default manager
     published = PublishedManager()
+    draft = DraftManager()
 
     class Meta:
         ordering = ['-published_at']

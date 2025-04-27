@@ -1,0 +1,42 @@
+{% for post in posts %}
+    <div class='single-post'>
+        <div class='title'>
+            <a href='../post/{{post.id}}/'> {{post.title}} </a>
+            <p class='by'>
+                published at <span class='diff'>{{post.published_at}}</span>
+                by <a class='diff' href="{% url 'person_posts' post.author.id %}" > {{post.author}} </a>
+            </p>
+        </div>
+        <div class='content'>
+            {{post.content}}
+        </div>
+        {% if user == post.author %}
+            <hr>
+            <div class='post-actions'>
+                <a href="{% url 'edit_post' post.id %}" class="btn btn-edit">
+                    <i class="fas fa-edit"></i> Edit
+                </a>
+                <form method="post" action="{% url 'delete_post'  post.id  %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-delete" onclick="return confirm('Are you sure you want to delete this post?');">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                </form>
+            </div>
+        {% endif %}
+    </div>
+{% endfor %}
+
+{% if not person %}
+    <div class="pagination mb-5">
+        {% if posts.has_previous %}
+            <a href="?page={{ posts.previous_page_number }}" class="prev-btn">⬅ Previous</a>
+        {% endif %}
+
+        <span class="current-page">Page {{ posts.number }} of {{ posts.paginator.num_pages }}</span>
+
+        {% if posts.has_next %}
+            <a href="?page={{ posts.next_page_number }}" class="next-btn">Next ➡</a>
+        {% endif %}
+    </div>
+{% endif %}
