@@ -7,6 +7,7 @@ from .models import Post
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from django.utils.timezone import now
 from django.core.mail import send_mail
 from django.contrib import messages
 from django.conf import settings
@@ -34,7 +35,10 @@ def post_list(req):
 
 
 def post_details(req, pk):
-    post = get_object_or_404(Post.published, pk=pk)
+    post = get_object_or_404(Post, pk=pk)
+    if req.user != post.author and post.status=='draft':
+        messages.error(req, "You can't access this page")
+        return redirect('home')
     context={
         'post': post,
         'title':post.title,
@@ -80,6 +84,8 @@ def add_post(req):
                 content=form.cleaned_data['content'],
                 status=form.cleaned_data['status'],
             )
+            if form.cleaned_data['status'] == 'published':
+                new_post.published_at=now()
             new_post.save()
             messages.success(req, "Your post has been added successfully.")
             return redirect('home')
@@ -89,13 +95,16 @@ def add_post(req):
     context = {
         'form': form,
         'title': 'add a new post',
+        'heading': 'Add a new post',
     }
     return render(req, 'add_edit_post.html', context)
 
 
 @login_required
 def edit_post(req, pk):
-    post = get_object_or_404(Post.published, pk=pk)
+    post = get_object_or_404(Post, pk=pk)
+    original_status = post.status
+    original_published_at = post.published_at
 
     if req.user != post.author:
         messages.error(req, "You can't access this page")
@@ -104,7 +113,17 @@ def edit_post(req, pk):
     if req.method == 'POST':
         form = AddPost(req.POST, instance=post)
         if form.is_valid():
-            form.save()
+            if original_status == 'published' and form.cleaned_data['status'] == 'draft':
+                messages.error(req, "You cannot change a published post back to draft.")
+                return redirect('edit_post', pk=post.pk)
+
+            post.title = form.cleaned_data['title']
+            post.content = form.cleaned_data['content']
+            post.status = form.cleaned_data['status']
+            if form.cleaned_data['status'] == 'published' and post.published_at is None:
+                post.published_at=now()
+
+            post.save()
             messages.success(req, "Your post has been updated successfully.")
             return redirect('home')
     else:
@@ -113,5 +132,20 @@ def edit_post(req, pk):
     context = {
         'form': form,
         'title': 'edit your post',
+        'heading': 'Edit your post',
     }
     return render(req, 'add_edit_post.html', context)
+
+
+@login_required
+def delete_post(req, pk):
+    post = get_object_or_404(Post, pk=pk)
+
+    if req.user != post.author:
+        messages.error(req, "You can't access this page")
+        return redirect('home')
+
+    if req.method == 'POST':
+        post.delete()
+        messages.success(req, "Your post deleted successfully")
+    return redirect('home')

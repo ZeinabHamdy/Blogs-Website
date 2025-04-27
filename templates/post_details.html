@@ -13,6 +13,20 @@
             <div class='content'>
                 {{post.content}}
             </div>
+            {% if user == post.author %}
+            <hr>
+                <div class='post-actions'>
+                    <a href="{% url 'edit_post' post.id %}" class="btn btn-edit">
+                        <i class="fas fa-edit"></i> Edit
+                    </a>
+                    <form method="post" action="{% url 'delete_post'  post.id %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-delete" onclick="return confirm('Are you sure you want to delete this post?');">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </form>
+                </div>
+            {% endif %}
             <div class="share-section">
                 <a href="{% url 'post_share' pk=post.pk %}" class="share-btn email">📩 Share via Email</a>
             </div>
