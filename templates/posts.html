@@ -6,16 +6,18 @@
         <a href="{% url 'add_post' %}" class="btn btn-add" style='margin-left:40%;'><i class="fas fa-plus"></i> Add a new post</a>
         <hr>
             {% if person %}
-                {% if posts_draft %}
-                    View your drafted posts <br>
-                    {% include '_posts_view.html' with posts=posts_draft person=person %}
-                {% else %}
-                    no drafted posts found !
+                {% if me_or_not %}
+                    {% if posts_draft %}
+                        View drafted posts <br>
+                        {% include '_posts_view.html' with posts=posts_draft person=person %}
+                    {% else %}
+                        no drafted posts found !
+                    {% endif %}
+                    <hr>
                 {% endif %}
-                <hr>
 
                 {% if posts %}
-                    View your published posts 
+                    View published posts 
                 {% else %}
                     no published posts found !
                 {% endif %}

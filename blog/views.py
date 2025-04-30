@@ -165,5 +165,6 @@ def person_posts(req, pk):
         'posts': published,
         'posts_draft': drafted,
         'person': 1,
+        'me_or_not': (req.user.pk == pk),
     }
     return render(req, 'posts.html', context)

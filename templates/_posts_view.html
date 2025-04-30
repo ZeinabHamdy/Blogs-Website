@@ -4,7 +4,7 @@
             <a href='../post/{{post.id}}/'> {{post.title}} </a>
             <p class='by'>
                 published at <span class='diff'>{{post.published_at}}</span>
-                by <a class='diff' href="{% url 'person_posts' post.author.id %}" > {{post.author}} </a>
+                by <a class='diff' href="{% url 'person_posts' post.author.id %}" title='View author posts' > {{post.author}} </a>
             </p>
         </div>
         <div class='content'>
