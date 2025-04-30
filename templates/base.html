@@ -29,9 +29,11 @@
                 <li class="nav-item">
                     <a class="nav-link " href="{% url 'home' %}">Blogs</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="{% url 'person_posts' user.pk %}">View your posts</a>
-                </li>
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link " href="{% url 'person_posts' user.pk %}">View your posts</a>
+                    </li>
+                {% endif %}
                 </ul>
                 <ul class="navbar-nav">
                     {% if user.is_authenticated %}
